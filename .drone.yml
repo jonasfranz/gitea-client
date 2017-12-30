@@ -1,0 +1,21 @@
+pipeline:
+  build:
+    image: gradle:4.4-jdk8-alpine
+    pull: true
+    commands:
+      - gradle clean
+      - gradle assemble
+  test:
+    image: jonasfranz/gradle-with-firefox:4.4-jdk8-alpine
+    pull: true
+    commands:
+      - gradle clean
+      #- gradle test JavaScript tests are currently corrupted
+  deploy:
+    image: gradle:4.4-jdk8-alpine
+    pull: true
+    secrets: [ BINTRAY_API_KEY, BINTRAY_USER]
+    commands:
+      - gradle publish
+    when:
+      event: [ tag ]
