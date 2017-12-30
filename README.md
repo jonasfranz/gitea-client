@@ -21,15 +21,15 @@ repositories {
 If you have a [multi platform project](https://kotlinlang.org/docs/reference/multiplatform.html) please
 add the `common` dependency to your `common` module. Please also add the JVM and JS dependency to your JS/JVM module.
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client-common:0.0.1'
+compile 'de.jonasfranz.gitea:gitea-client-common:0.0.2'
 ```
 #### JVM
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client:0.0.1'
+compile 'de.jonasfranz.gitea:gitea-client:0.0.2'
 ```
 #### JS
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client-js:0.0.1'
+compile 'de.jonasfranz.gitea:gitea-client-js:0.0.2'
 ```
 
 
