@@ -14,7 +14,9 @@ This project is actually under construction.
 Add the gitea client repository to your module
 ```groovy
 repositories {
-    maven { url "https://dl.bintray.com/jonasfranzdev/gitea-client" } 
+    jcenter()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url "https://jonasfranzdev.bintray.com/gitea-client" }
 }
 ```
 #### Common
