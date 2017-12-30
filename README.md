@@ -8,7 +8,7 @@ This project is actually under construction.
 - [X] JavaScript (JS)
 - [X] Java (JVM)
 
-##Using gitea-client
+## Using gitea-client
 ### Gradle-based project
 Add the gitea client repository to your module
 ```groovy
