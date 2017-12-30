@@ -3,22 +3,22 @@ workspace:
   path: /
 pipeline:
   build:
-    image: gradle:4.4-jdk8-alpine
+    image: openjdk:8-jdk
     pull: true
     commands:
-      - gradle clean
-      - gradle assemble
+      - ./gradlew clean
+      - ./gradlew assemble
   test:
-    image: jonasfranz/gradle-with-firefox:4.4-jdk8-alpine
+    image: jonasfranz/openjdk-with-firefox:8-jdk
     pull: true
     commands:
-      - gradle :jvm:test #JavaScript tests are currently corrupted
+      - ./gradlew :jvm:test #JavaScript tests are currently corrupted
   deploy:
     image: gradle:4.4-jdk8-alpine
     pull: true
     secrets: [ BINTRAY_API_KEY, BINTRAY_USER]
     commands:
-      - gradle publish
+      - ./gradlew publish
     when:
       event: [ tag ]
   github_release:
