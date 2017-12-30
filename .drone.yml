@@ -1,18 +1,17 @@
 workspace:
   base: /home/gradle
-  path: gitea-client/
+  path: /
 pipeline:
   build:
     image: gradle:4.4-jdk8-alpine
     pull: true
     commands:
-      - gradle clean -s
+      - gradle clean
       - gradle assemble
   test:
     image: jonasfranz/gradle-with-firefox:4.4-jdk8-alpine
     pull: true
     commands:
-      - gradle clean -s
       - gradle :jvm:test #JavaScript tests are currently corrupted
   deploy:
     image: gradle:4.4-jdk8-alpine
@@ -22,3 +21,16 @@ pipeline:
       - gradle publish
     when:
       event: [ tag ]
+  github_release:
+    image: plugins/github-release
+    secrets: [ github_token ]
+    files:
+      - common/build/libs/*
+      - jvm/build/libs/*
+      - js/build/libs/*
+    checksum:
+      - md5
+      - sha1
+      - sha512
+    when:
+      event: tag

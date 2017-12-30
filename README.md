@@ -1,5 +1,6 @@
-[![Download](https://api.bintray.com/packages/jonasfranzdev/gitea-client/gitea-client/images/download.svg)](https://bintray.com/jonasfranzdev/gitea-client/gitea-client/_latestVersion)
 # API-Client for Gitea
+[![Download](https://api.bintray.com/packages/jonasfranzdev/gitea-client/gitea-client/images/download.svg)](https://bintray.com/jonasfranzdev/gitea-client/gitea-client/_latestVersion)
+[![Build status](https://drone.jonasfranz.de/api/badges/JonasFranzDEV/gitea-client/status.svg)](https://drone.jonasfranz.de/JonasFranzDEV/gitea-client)
 
 A Kotlin based API client for [Gitea](https://github.com/go-gitea/gitea).
 
