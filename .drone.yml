@@ -14,9 +14,9 @@ pipeline:
     commands:
       - ./gradlew :jvm:test #JavaScript tests are currently corrupted
   deploy:
-    image: gradle:4.4-jdk8-alpine
+    image: openjdk:8-jdk
     pull: true
-    secrets: [ BINTRAY_API_KEY, BINTRAY_USER]
+    secrets: [ bintray_api_key, bintray_user ]
     commands:
       - ./gradlew publish
     when:
