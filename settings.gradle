@@ -1,3 +1,3 @@
 rootProject.name = 'gitea-client'
 
-include 'gitea-client-jvm', 'gitea-client-js'
+include 'common', 'jvm', 'js'

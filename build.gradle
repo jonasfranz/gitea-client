@@ -1,35 +1,95 @@
 buildscript {
+
     ext.kotlin_version = '1.2.10'
     ext.serialization_version = '0.4'
 
     repositories {
+        jcenter()
         mavenCentral()
         maven { url "https://kotlin.bintray.com/kotlinx" }
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
+allprojects {
+    group 'de.jonasfranz.gitea'
+    version '0.0.1'
 
-apply plugin: 'kotlin-platform-common'
-apply plugin: 'kotlinx-serialization'
-
-repositories {
-    mavenCentral()
-    maven { url "https://kotlin.bintray.com/kotlinx" }
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+    }
 }
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core-common:0.21'
-    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
-}
-kotlin {
-    experimental {
-        coroutines "enable"
+apply plugin: 'kotlin'
+
+subprojects {
+    apply plugin: 'kotlinx-serialization'
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+
+    def varintName = ""
+
+    if (project.name == "jvm") {
+        varintName = "${rootProject.name}"
+    } else {
+        varintName = "${rootProject.name}-${project.name}"
+    }
+
+    afterEvaluate {
+        task sourceJar(type: Jar, dependsOn: classes) {
+            classifier 'sources'
+            from sourceSets.main.kotlin
+            duplicatesStrategy = "exclude"
+            def platformSrc = sourceSets.main.kotlin
+            def commonSrc = project(':common').sourceSets.main.kotlin
+            from (platformSrc + commonSrc)
+        }
+    }
+
+    tasks.withType(Jar) {
+        archivesBaseName = varintName
+    }
+
+    publishing {
+        publications {
+            mavenProject(MavenPublication) {
+                from components.java
+                groupId project.group
+                artifactId varintName
+                version project.version
+
+                artifact sourceJar {
+                    classifier "sources"
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+        publications = ['mavenProject']
+        pkg {
+            repo = 'gitea-client'
+            name = 'gitea-client'
+            userOrg = 'jonasfranzdev'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/JonasFranzDEV/gitea-client'
+            websiteUrl = 'https://github.com/JonasFranzDEV/gitea-client'
+            issueTrackerUrl = 'https://github.com/JonasFranzDEV/gitea-client/issues'
+
+            githubRepo = 'JonasFranzDEV/gitea-client'
+            version {
+                name = project.version
+            }
+        }
     }
 }

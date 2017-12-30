@@ -1,0 +1,42 @@
+buildscript {
+    ext.kotlin_version = '1.2.10'
+    ext.serialization_version = '0.4'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
+    }
+}
+
+
+
+
+apply plugin: 'kotlin-platform-common'
+apply plugin: 'kotlinx-serialization'
+
+repositories {
+    mavenCentral()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core-common:0.21'
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
