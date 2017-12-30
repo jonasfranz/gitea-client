@@ -18,7 +18,7 @@ pipeline:
     pull: true
     secrets: [ bintray_api_key, bintray_user ]
     commands:
-      - ./gradlew publish
+      - ./gradlew bintrayUpload
     when:
       event: [ tag ]
   github_release:
