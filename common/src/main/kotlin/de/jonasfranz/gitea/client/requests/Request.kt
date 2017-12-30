@@ -1,5 +1,6 @@
 package de.jonasfranz.gitea.client.requests
 
+import kotlinx.serialization.serializer
 import kotlinx.serialization.json.JSON as KJSON
 
 class Request() {
@@ -28,9 +29,9 @@ class Request() {
         headers.put("Authorization", "token $token")
     }
 
-    infix fun body(json: JSON) = apply {
+    inline infix fun <reified T : Any> body(json: T) = apply {
         header("Content-Type", "application/json")
-        body = KJSON.stringify(json)
+        body = KJSON.stringify(T::class.serializer(), json)
     }
 
     infix fun body(content: String) = apply {

@@ -17,7 +17,7 @@ open class API(var client: Client) {
         if (!resp.successful) {
             throw HttpErrorException(resp)
         }
-        return KJSON.parse<T>(resp.responseText ?: throw Exception("Empty response"))
+        return KJSON.parse(T::class.serializer(), resp.responseText ?: throw Exception("Empty response"))
     }
 
     suspend inline fun <reified T : Any> Request.sendAndReceiveList(): List<T> {
