@@ -1,7 +1,8 @@
 package de.jonasfranz.gitea.client.requests
 
+import de.jonasfranz.gitea.client.Client
 import de.jonasfranz.gitea.client.models.User
 
-expect class UsersAPI : API {
-    suspend fun getUserInfo(username: String): User
+class UsersAPI(client: Client) : API(client) {
+    suspend fun getUserInfo(username: String): User = TODO()
 }

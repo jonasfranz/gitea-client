@@ -1,13 +1,14 @@
 package de.jonasfranz.gitea.client.requests
 
+import de.jonasfranz.gitea.client.Client
 import de.jonasfranz.gitea.client.models.Repository
 
-expect class RepositoriesAPI : API {
-    suspend fun listMyRepos(): List<Repository>
+class RepositoriesAPI(client: Client) : API(client) {
+    suspend fun listMyRepos(): List<Repository> = TODO()
 
-    suspend fun listUserRepos(username: String): List<Repository>
+    suspend fun listUserRepos(username: String): List<Repository> = TODO()
 
-    suspend fun getRepo(owner: String, reponame: String): List<Repository>
+    suspend fun getRepo(owner: String, reponame: String): List<Repository> = TODO()
 }
 
 /**

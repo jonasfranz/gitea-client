@@ -1,36 +1,58 @@
 package de.jonasfranz.gitea.client
 
-import de.jonasfranz.gitea.client.models.AccessToken
-import de.jonasfranz.gitea.client.requests.AccessAPI
-import de.jonasfranz.gitea.client.requests.createBasicAuth
-import io.ktor.client.HttpClient
-import io.ktor.client.backend.HttpClientBackendFactory
-import io.ktor.client.backend.jetty.JettyHttp2Backend
-import io.ktor.client.features.json.JsonFeature
-import kotlinx.coroutines.experimental.async
+import com.github.kittinunf.fuel.*
+import com.github.kittinunf.fuel.core.FuelManager
+import de.jonasfranz.gitea.client.requests.Request
+import de.jonasfranz.gitea.client.requests.Response
+import kotlin.coroutines.experimental.suspendCoroutine
 
-actual class Client actual constructor(var url: String, var accessToken: String?) {
-    val engineFactory: HttpClientBackendFactory = { JettyHttp2Backend() }
+actual class Client actual constructor(
+        url: String,
+        actual var accessToken: String? = null) {
     actual var applicationName: String = "kt-client"
 
-    var access = AccessAPI(this)
+    private var _url = url
+    actual var url
+        get() = _url
+        set(value) {
+            _url = value
+            FuelManager.instance.basePath = value
+        }
 
-    actual constructor(url: String, username: String, password: String) : this(url, null) {
-        async {
-            // Retrieving existing tokens for [applicationName]
-            accessToken = access.listAccessTokens(AccessAPI.createBasicAuth(username, password), username).filter {
-                it.name == applicationName
-            }.firstOrNull()?.sha1
-            if (accessToken == null) {
-                // Create new access token
-                accessToken = access.createAccessToken(AccessAPI.createBasicAuth(username, password), username, AccessToken.CreateAccessTokenOption(applicationName)).sha1
+    init {
+        FuelManager.instance.basePath = url
+    }
+
+    actual suspend fun sendRequest(request: Request): Response = suspendCoroutine { c ->
+        val req = with(request) {
+            when (method) {
+                Request.Method.GET -> path.httpGet()
+                Request.Method.POST -> path.httpPost()
+                Request.Method.PUT -> path.httpPut()
+                Request.Method.DELETE -> path.httpDelete()
+                Request.Method.PATCH -> path.httpPatch()
+                Request.Method.HEAD -> path.httpHead()
+                else -> throw Exception(method.name + " is not supported by JVM")
             }
+        }
+
+        if (request.body != null) req.body(request.body.toString())
+        req.header(request.headers)
+        req.response { r, response, result ->
+            if (result.component2() != null) {
+                println(r.url.toString())
+                c.resumeWithException(result.component2()!!)
+                return@response
+            }
+            c.resume(response.toResponse())
         }
     }
 
-    actual constructor(url: String) : this(url, null)
-
-    val ktor = HttpClient(engineFactory) {
-        install(JsonFeature)
+    fun com.github.kittinunf.fuel.core.Response.toResponse(): Response {
+        return Response(
+                status = this.statusCode,
+                responseText = String(data),
+                headers = this.headers.map { entry -> entry.key to entry.value.first() }.toMap()
+        )
     }
 }

@@ -5,19 +5,26 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
+        classpath "gradle.plugin.com.craigburke.gradle:karma-gradle:1.4.4"
     }
 }
+
+
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin2js'
+apply plugin: 'com.craigburke.karma'
 
 repositories {
     mavenCentral()
     maven { url "https://kotlin.bintray.com/kotlinx" }
 }
+
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
@@ -33,3 +40,38 @@ kotlin {
         coroutines "enable"
     }
 }
+
+
+def libDir = "$buildDir/lib"
+def compileOutput = compileKotlin2Js.outputFile
+def testOutput = compileTestKotlin2Js.outputFile
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+    configurations.testCompile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+
+    into libDir
+}
+
+karma {
+    dependencies(['mocha'])
+
+    frameworks = ['mocha']
+    browsers = ['Firefox']
+
+    files = [
+            "$libDir/kotlin.js",
+            "$libDir/*.js",
+            compileOutput,
+            testOutput
+    ]
+}
+
+karmaRun {
+    dependsOn compileTestKotlin2Js
+    dependsOn populateNodeModules
+}
+
+test.dependsOn karmaRun
+clean.dependsOn karmaClean

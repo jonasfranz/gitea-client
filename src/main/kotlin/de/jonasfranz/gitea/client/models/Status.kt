@@ -4,6 +4,7 @@ import de.jonasfranz.gitea.client.utils.Date
 import de.jonasfranz.gitea.client.utils.SerializedName
 
 object Status {
+    @Suppress("UNUSED_PARAMETER")
     enum class State(state: String) {
         @SerializedName("pending")
         Pending("pending"),
