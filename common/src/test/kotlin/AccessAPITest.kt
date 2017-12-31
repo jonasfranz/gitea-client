@@ -1,19 +1,12 @@
-import de.jonasfranz.gitea.client.Client
 import de.jonasfranz.gitea.client.access
 import de.jonasfranz.gitea.client.models.AccessToken
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class AccessAPITest {
+class AccessAPITest : APITest() {
 
-    lateinit var client: Client
-
-    @BeforeTest
-    fun constructClient() {
-        client = ClientSettings.onlyURL()
-    }
+    override val type: ClientType = ClientType.OnlyURL
 
     @Test
     fun testListAccessTokens() {

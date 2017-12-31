@@ -1,23 +1,10 @@
 package de.jonasfranz.gitea.client.models
 
-import de.jonasfranz.gitea.client.utils.Date
+import de.jonasfranz.gitea.client.utils.JSONDate
 import de.jonasfranz.gitea.client.utils.SerializedName
+import kotlinx.serialization.Serializable
 
 object Status {
-    @Suppress("UNUSED_PARAMETER")
-    enum class State(state: String) {
-        @SerializedName("pending")
-        Pending("pending"),
-        @SerializedName("success")
-        Success("success"),
-        @SerializedName("error")
-        Error("error"),
-        @SerializedName("failure")
-        Failure("failure"),
-        @SerializedName("warning")
-        Warning("warning")
-    }
-
     /**
      * Status holds a single Status of a single commit
      * godoc: https://godoc.org/code.gitea.io/sdk/gitea#Status
@@ -33,10 +20,11 @@ object Status {
      * @param[createdAt] the date when the status was created
      * @param[updatedAt] the date when the status got updated the last time
      */
+    @Serializable
     data class Status(
             var id: Int,
             @SerializedName("status")
-            var state: State,
+            var state: String,
             @SerializedName("target_url")
             var targetURL: String,
             var description: String,
@@ -44,9 +32,9 @@ object Status {
             var context: String,
             var creator: User,
             @SerializedName("created_at")
-            var createdAt: Date,
+            var createdAt: JSONDate,
             @SerializedName("updated_at")
-            var updatedAt: Date
+            var updatedAt: JSONDate
     )
 
     /**
@@ -62,8 +50,9 @@ object Status {
      * @param[repository] commit's repository
      * @param[commitURL] commit's URL (empty when [StatusAPI.getCombinedStatus] is used)
      */
+    @Serializable
     data class CombinedStatus(
-            var state: State,
+            var state: String,
             var sha: String,
             @SerializedName("total_count")
             var totalCount: Int,
@@ -74,8 +63,9 @@ object Status {
             var url: String
     )
 
+    @Serializable
     data class CreateStatusOption(
-            var state: State,
+            var state: String,
             @SerializedName("target_url")
             var targetURL: String,
             var description: String,

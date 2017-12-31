@@ -1,6 +1,7 @@
 package de.jonasfranz.gitea.client.models
 
 import de.jonasfranz.gitea.client.utils.SerializedName
+import kotlinx.serialization.Serializable
 
 
 /**
@@ -11,6 +12,7 @@ import de.jonasfranz.gitea.client.utils.SerializedName
  * @param email user's email address
  * @param avatarURL URL to user's avatar
  */
+@Serializable
 data class User(
         var id: Int,
         @SerializedName("login")

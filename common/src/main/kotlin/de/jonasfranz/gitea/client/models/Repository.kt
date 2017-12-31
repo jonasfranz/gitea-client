@@ -1,8 +1,11 @@
 package de.jonasfranz.gitea.client.models
 
-import de.jonasfranz.gitea.client.utils.Date
+import de.jonasfranz.gitea.client.utils.JSONDate
 import de.jonasfranz.gitea.client.utils.SerializedName
+import kotlinx.serialization.Optional
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Repository(
         var id: Int,
         var owner: User,
@@ -13,7 +16,8 @@ data class Repository(
         var empty: Boolean,
         var private: Boolean,
         var fork: Boolean,
-        var parent: Repository,
+        @Optional
+        var parent: Repository? = null,
         var mirror: Boolean,
         var size: Int,
         @SerializedName("html_url")
@@ -34,12 +38,13 @@ data class Repository(
         @SerializedName("default_branch")
         var defaultBranch: String,
         @SerializedName("created_at")
-        var createdAt: Date,
+        var createdAt: JSONDate,
         @SerializedName("updated_at")
-        var updatedAt: Date,
+        var updatedAt: JSONDate,
         var permissions: Permission
 ) {
     companion object {
+        @Serializable
         data class Permission(
                 var admin: Boolean = false,
                 var push: Boolean = false,
