@@ -26,10 +26,10 @@ actual class Client actual constructor(
             }
             null
         }
+        xhr.open(request.method.name, url + request.path)
         request.headers.forEach {
             xhr.setRequestHeader(it.key, it.value)
         }
-        xhr.open(request.method.name, url + request.path)
         if (request.body == null) {
             xhr.send(request.body)
         } else {

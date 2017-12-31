@@ -2,17 +2,13 @@ workspace:
   base: /home/gradle
   path: /
 pipeline:
-  build:
-    image: openjdk:8-jdk
+  build_and_test:
+    image: jonasfranz/openjdk-with-firefox:8-jdk
     pull: true
     commands:
       - ./gradlew clean
       - ./gradlew assemble
-  test:
-    image: jonasfranz/openjdk-with-firefox:8-jdk
-    pull: true
-    commands:
-      - ./gradlew :jvm:test #JavaScript tests are currently corrupted
+      - ./gradlew :jvm:test
   deploy:
     image: openjdk:8-jdk
     pull: true
