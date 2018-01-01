@@ -31,7 +31,3 @@ val Client.users
 
 val Client.repositories
     get() = RepositoriesAPI(this)
-
-val Client.status
-    get() = StatusAPI(this)
-

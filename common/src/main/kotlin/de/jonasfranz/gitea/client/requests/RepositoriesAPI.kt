@@ -16,7 +16,7 @@ class RepositoriesAPI(client: Client) : API(client) {
 
     suspend fun getRepo(owner: String, reponame: String): Repository = request {
         optionalAuthentication()
-        path("/repos/$owner/$reponame")
+        path("repos/$owner/$reponame")
     }.send()
 }
 

@@ -8,6 +8,22 @@ This project is actually under construction.
 ## Support
 - [X] JavaScript (JS)
 - [X] Java (JVM)
+## Example
+```kotlin
+fun createStatus() = async {
+    val client = Client("https://your.gitea.instance/api/v1", "YOUR-API-KEY")
+    val repository = client.repositories.getRepo("organization", "reponame")
+    val status = repository.createStatus("COMMIT-SHA",
+                        Status.CreateStatusOption(
+                                state = "warning",
+                                context = "API Client Test",
+                                description =  "A status created during an automated test",
+                                targetURL = "https://github.com/JonasFranzDEV/gitea-client"
+                        )
+                )
+    println(status.createdAt.getTime())
+}
+```
 
 ## Using gitea-client
 ### Gradle-based project
@@ -23,15 +39,15 @@ repositories {
 If you have a [multi platform project](https://kotlinlang.org/docs/reference/multiplatform.html) please
 add the `common` dependency to your `common` module. Please also add the JVM and JS dependency to your JS/JVM module.
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client-common:0.0.5'
+compile 'de.jonasfranz.gitea:gitea-client-common:0.0.6'
 ```
 #### JVM
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client:0.0.5'
+compile 'de.jonasfranz.gitea:gitea-client:0.0.6'
 ```
 #### JS
 ```groovy
-compile 'de.jonasfranz.gitea:gitea-client-js:0.0.5'
+compile 'de.jonasfranz.gitea:gitea-client-js:0.0.6'
 ```
 
 
