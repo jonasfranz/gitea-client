@@ -110,6 +110,20 @@ data class Repository(
         repoPath("commits/$sha/status")
     }.send()
 
+    /**
+     * Returns all issues for a given repository
+     */
+    suspend fun listIssues(page: Int = 1) = request {
+        repoPath("issues?page=$page")
+    }.sendAndReceiveList<Issue>()
+
+    /**
+     * Returns a single issue for a given repository
+     */
+    suspend fun getIssue(index: Int) = request {
+        repoPath("issues/$index")
+    }.send<Issue>()
+
     companion object {
         @Serializable
         data class Permission(
