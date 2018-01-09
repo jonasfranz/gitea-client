@@ -7,8 +7,8 @@ class StatusAPITest : RepositoryTest() {
     private val firstCommit = "47d862496f71143df2505de2b0a98ea3efe3e07b"
 
     @Test
-    fun testCreateStatus() {
-        val result = runBlocking {
+    fun testCreateStatus() = runBlocking {
+        val result =
             repository.createStatus(firstCommit,
                     Status.CreateStatusOption(
                             state = "warning",
@@ -17,21 +17,21 @@ class StatusAPITest : RepositoryTest() {
                             targetURL = "https://github.com/JonasFranzDEV/gitea-client"
                     )
             )
-        }
+
         assertEquals("warning", result.state)
     }
 
     @Test
-    fun testListStatuses() {
-        val results = runBlocking { repository.listStatuses(firstCommit, 1) }
+    fun testListStatuses() = runBlocking {
+        val results = repository.listStatuses(firstCommit, 1)
         assertTrue("There must be at least one status for first commmit") {
             results.isNotEmpty()
         }
     }
 
     @Test
-    fun testCombinedStatus() {
-        val result = runBlocking { repository.getCombinedStatus(firstCommit) }
+    fun testCombinedStatus() = runBlocking {
+        val result = repository.getCombinedStatus(firstCommit)
         assertEquals(repository, result.repository)
         assertEquals(result.totalCount, result.statuses.count())
         assertTrue("There must be at least one status for first commmit") {

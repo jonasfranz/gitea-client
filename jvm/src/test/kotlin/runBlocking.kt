@@ -1,3 +1,3 @@
-actual fun <T> runBlocking(block: suspend () -> T): T {
-    return kotlinx.coroutines.experimental.runBlocking { block() }
+actual fun <T> runBlocking(block: suspend () -> T) {
+    kotlinx.coroutines.experimental.runBlocking { block() }
 }

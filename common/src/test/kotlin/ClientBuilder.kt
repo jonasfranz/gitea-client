@@ -9,8 +9,8 @@ object ClientSettings {
     val ApplicationName = "test"
 
     fun onlyURL() = Client(URL).apply { applicationName = ApplicationName }
-    fun usernamePasswordClient() = runBlocking { Client(URL, Username, Password).apply { applicationName = ApplicationName } }
+    suspend fun usernamePasswordClient() = Client(URL, Username, Password).apply { applicationName = ApplicationName }
     fun defaultClient() = Client(URL, DefaultAccessToken).apply { applicationName = ApplicationName }
 }
 
-expect fun <T> runBlocking(block: suspend () -> T): T
+expect fun <T> runBlocking(block: suspend () -> T)

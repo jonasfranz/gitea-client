@@ -9,20 +9,16 @@ class AccessAPITest : APITest() {
     override val type: ClientType = ClientType.OnlyURL
 
     @Test
-    fun testListAccessTokens() {
-        val tokens = runBlocking {
-            client.access.listAccessTokens(ClientSettings.Username, ClientSettings.Password)
-        }
+    fun testListAccessTokens() = runBlocking {
+        val tokens = client.access.listAccessTokens(ClientSettings.Username, ClientSettings.Password)
         assertTrue(message = "Their must be at least one existing access key") {
             tokens.isNotEmpty()
         }
     }
 
     @Test
-    fun testCreateAccessToken() {
-        val token = runBlocking {
-            client.access.createAccessToken(ClientSettings.Username, ClientSettings.Password, AccessToken.CreateAccessTokenOption("t3st"))
-        }
+    fun testCreateAccessToken() = runBlocking {
+        val token = client.access.createAccessToken(ClientSettings.Username, ClientSettings.Password, AccessToken.CreateAccessTokenOption("t3st"))
         assertEquals("t3st", token.name)
         assertTrue(message = "The given token is to short") {
             token.sha1.length > 5

@@ -6,7 +6,7 @@ open class RepositoryTest : APITest() {
     protected lateinit var repository: Repository
 
     @BeforeTest
-    fun recoverRepository() {
-        repository = runBlocking { client.repositories.getRepo("demo", "test") }
+    fun recoverRepository() = runBlocking {
+        repository = client.repositories.getRepo("demo", "test")
     }
 }

@@ -6,8 +6,8 @@ class BranchesTest : RepositoryTest() {
     private val branchToTest = "master"
 
     @Test
-    fun testListBranches() {
-        val branches = runBlocking { repository.listBranches() }
+    fun testListBranches() = runBlocking {
+        val branches = repository.listBranches()
         assertTrue("There must be at least one branch") {
             branches.isNotEmpty()
         }
@@ -17,8 +17,8 @@ class BranchesTest : RepositoryTest() {
     }
 
     @Test
-    fun testGetBranch() {
-        val branch = runBlocking { repository.getBranch(branchToTest) }
+    fun testGetBranch() = runBlocking {
+        val branch = repository.getBranch(branchToTest)
         assertEquals(branchToTest, branch.name)
     }
 }

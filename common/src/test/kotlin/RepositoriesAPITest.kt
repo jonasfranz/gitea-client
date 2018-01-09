@@ -5,8 +5,8 @@ import kotlin.test.assertTrue
 
 class RepositoriesAPITest : APITest() {
     @Test
-    fun testMyRepos() {
-        val repos = runBlocking { client.repositories.listMyRepos() }
+    fun testMyRepos() = runBlocking {
+        val repos = client.repositories.listMyRepos()
         assertEquals(1, repos.size, "number of repositories must be 1")
         val testRepo = repos.first()
         assertEquals("test", testRepo.name)
@@ -14,8 +14,8 @@ class RepositoriesAPITest : APITest() {
     }
 
     @Test
-    fun testListUserRepos() {
-        val repos = runBlocking { client.repositories.listUserRepos("JonasFranzDEV") }
+    fun testListUserRepos() = runBlocking {
+        val repos = client.repositories.listUserRepos("JonasFranzDEV")
         assertTrue("number of repositories must be at least 1") {
             repos.size >= 1
         }
@@ -27,8 +27,8 @@ class RepositoriesAPITest : APITest() {
     }
 
     @Test
-    fun testGetRepo() {
-        val repo = runBlocking { client.repositories.getRepo("JonasFranzDEV", "Crowdin") }
+    fun testGetRepo() = runBlocking {
+        val repo = client.repositories.getRepo("JonasFranzDEV", "Crowdin")
         assertEquals("Crowdin", repo.name)
         assertEquals(true, repo.mirror)
     }

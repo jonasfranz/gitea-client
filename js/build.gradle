@@ -1,9 +1,10 @@
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.20-eap-33'
     ext.serialization_version = '0.4'
 
     repositories {
         mavenCentral()
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap"}
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url "https://plugins.gradle.org/m2/" }
     }
@@ -22,6 +23,7 @@ apply plugin: 'com.craigburke.karma'
 
 repositories {
     mavenCentral()
+    maven { url "https://dl.bintray.com/kotlin/kotlin-eap"}
     maven { url "https://kotlin.bintray.com/kotlinx" }
 }
 

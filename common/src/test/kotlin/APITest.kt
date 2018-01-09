@@ -5,7 +5,7 @@ open class APITest {
     lateinit var client: Client
 
     @BeforeTest
-    fun constructClient() {
+    fun constructClient() = runBlocking {
         client = with(ClientSettings) {
             when (type) {
                 ClientType.Default -> defaultClient()

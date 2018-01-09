@@ -1,12 +1,13 @@
 buildscript {
 
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.20-eap-33'
     ext.serialization_version = '0.4'
 
     repositories {
         jcenter()
         mavenCentral()
         maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap"}
     }
 
     dependencies {
@@ -24,6 +25,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap"}
     }
 }
 

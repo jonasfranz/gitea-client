@@ -11,8 +11,8 @@ class IssuesTest : RepositoryTest() {
     }
 
     @Test
-    fun testGetIssue() {
-        val issue = runBlocking { repository.getIssue(1) }
+    fun testGetIssue() = runBlocking {
+        val issue = repository.getIssue(1)
         assertEquals("Test-Issue", issue.title, "issue title")
         assertTrue { issue.labels.isNotEmpty() }
         assertNotNull(issue.milestone)
